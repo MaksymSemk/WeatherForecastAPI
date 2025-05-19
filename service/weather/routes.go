@@ -17,7 +17,7 @@ func NewHandler() *Handler {
 }
 
 func (h *Handler) RegisterRoutes(router *mux.Router) {
-	router.HandleFunc("/weather", h.getWeather).Methods("GET") // change to GET
+	router.HandleFunc("/weather", h.getWeather).Methods("GET")
 }
 
 func (h *Handler) getWeather(w http.ResponseWriter, r *http.Request) {
