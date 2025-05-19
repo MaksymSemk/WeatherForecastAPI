@@ -10,14 +10,16 @@ import (
 )
 
 type APIServer struct {
-	address string
-	db      *sql.DB
+	address     string
+	docker_port string
+	db          *sql.DB
 }
 
-func NewApiServer(address string, db *sql.DB) *APIServer {
+func NewApiServer(address string, docker_port string, db *sql.DB) *APIServer {
 	return &APIServer{
-		address: address,
-		db:      db,
+		address:     address,
+		docker_port: docker_port,
+		db:          db,
 	}
 }
 
@@ -31,5 +33,9 @@ func (s *APIServer) Run() error {
 
 	log.Println("Listening on", s.address)
 
-	return http.ListenAndServe(s.address, router)
+	if s.docker_port != "no-port" {
+		return http.ListenAndServe(":"+s.docker_port, router)
+	} else {
+		return http.ListenAndServe(":"+s.address, router)
+	}
 }
